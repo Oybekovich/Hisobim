@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Supabase session is persisted in DataStore; allow it to be backed up. -->
+</full-backup-content>

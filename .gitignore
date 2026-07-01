@@ -1,0 +1,31 @@
+# ── Android / Gradle ────────────────────────────────────────────
+*.iml
+.gradle/
+/build
+/app/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+.kotlin/
+
+# Keystores / signing
+*.jks
+*.keystore
+*.p8
+*.p12
+*.key
+*.pem
+*.mobileprovision
+
+# ── IDE ─────────────────────────────────────────────────────────
+/.idea
+*.orig.*
+
+# ── OS ──────────────────────────────────────────────────────────
+.DS_Store
+
+# ── Archived React Native sources (kept in git, ignore deps) ────
+legacy-react-native/node_modules/
+legacy-react-native/.expo/
+legacy-react-native/dist/

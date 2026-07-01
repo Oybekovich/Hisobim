@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Launcher adaptive-icon background (app.json android.adaptiveIcon.backgroundColor) -->
+    <color name="ic_launcher_background">#1a2235</color>
+    <!-- Splash background (app.json splash.backgroundColor) -->
+    <color name="splash_bg">#FFFFFF</color>
+    <color name="ink900">#1a2235</color>
+    <color name="bg_top">#F4F7FC</color>
+</resources>
