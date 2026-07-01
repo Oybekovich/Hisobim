@@ -1,8 +1,20 @@
 # Hisobim — Android (Kotlin / Jetpack Compose)
 
 Do'kon egalari uchun qarz daftari ilovasi. Avval **React Native (Expo)** da yozilgan edi;
-endi to'liq **native Kotlin + Jetpack Compose** ga ko'chirildi. Dizayn (Liquid Glass),
-struktura va Supabase backend o'zgartirilmadi.
+endi to'liq **native Kotlin + Jetpack Compose** ga ko'chirildi (Liquid Glass dizayn).
+
+## Funksiyalar
+
+- **Mijozlar** — qo'shish, tahrirlash, o'chirish, qidirish; har biri uchun qarz/to'lov tarixi
+- **Qarz / to'lov** — musbat summa = qarz, manfiy = to'lov; `total_debt` avtomatik hisoblanadi (trigger)
+- **Hisobot** — umumiy qarzdorlik, mijoz/qarzdor/to'lagan sonlari, eng ko'p qarzdorlar
+- **Sozlamalar** — do'kon nomini tahrirlash, profil, ilovadan chiqish
+- **Kirgan qurilmalar** — hisobga kirgan qurilmalarni ko'rish va ularni masofadan chiqarish
+  (`user_devices` + `revoke_device` RPC orqali haqiqiy sessiya o'chiriladi)
+- **Admin panel** — login maydoniga `admin` yozib kiriladi (maxsus akkaunt): barcha
+  do'konlarni ko'rish (login/email, mijoz soni, qarz), login/parolni o'zgartirish,
+  hisobni o'chirish (parol ko'rilmaydi — faqat qayta o'rnatiladi)
+- **Autentifikatsiya** — email/parol (Supabase Auth), parolni ko'rish/yashirish, form validatsiya
 
 ## Texnologiyalar
 
@@ -48,18 +60,29 @@ Supabase URL va anon kalit `app/build.gradle.kts` ichida `BuildConfig` orqali be
 | `src/components/*.tsx` | `ui/components/*.kt` |
 | `app/*` (expo-router) | `ui/<feature>/*Screen.kt` + `ui/navigation/HisobimNavGraph.kt` |
 
+> **RN'da mavjud bo'lmagan yangi qismlar:** `ui/admin/` (admin panel),
+> `ui/devices/` + `data/repo/DeviceRepository.kt` (kirgan qurilmalar),
+> `data/repo/AdminRepository.kt`, `data/local/DeviceIdProvider.kt`.
+
 ## Dizayn fidelity (e'tiborli nuqtalar)
 
-- **Glass effekt**: `expo-blur` BlurView o'rniga gradient fon ustida yarim shaffof oq
-  qatlam (token opacity'lari aniq saqlangan: card 0.85, input 0.82, nav 0.80, segment 0.78).
+- **Glass effekt**: `expo-blur` BlurView o'rniga gradient fon ustida oq qatlam
+  (kartalar va inputlar to'liq oq; nav bar — suzuvchi yumaloq panel; segment yarim shaffof).
 - **Ikonkalar**: Ionicons → eng yaqin Material Icons (`ui/components/AppIcons.kt` da
   markazlashtirilgan).
 - **Ranglar, spacing, radius, tipografika**: `theme.ts` dan 1:1 ko'chirildi.
 
-## Backend (o'zgarmagan)
+## Backend (Supabase)
 
-Supabase sxemasi va seed `supabase/migration.sql`, `supabase/seed.sql` da.
-Jadvallar: `shops`, `customers`, `debts`, `shop_users` + `total_debt` trigger + RLS.
+Sxema va seed `supabase/migration.sql`, `supabase/seed.sql` da.
+
+- **Jadvallar:** `shops`, `customers`, `debts`, `shop_users`, `user_devices`
+- **Trigger:** `debts` → `customers.total_debt` avtomatik sinxronlanadi
+- **RLS:** har bir do'kon egasi faqat o'z ma'lumotini ko'radi (`is_shop_owner`)
+- **RPC funksiyalari** (`SECURITY DEFINER`, xavfsiz):
+  - `revoke_device` — qurilma sessiyasini o'chirish ("Kirgan qurilmalar")
+  - `is_admin`, `admin_list_accounts`, `admin_update_email`, `admin_update_password`,
+    `admin_delete_user` — admin panel (faqat admin chaqira oladi)
 
 ## Eski React Native kodi
 
